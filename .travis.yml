@@ -4,3 +4,15 @@ jdk:
 - oraclejdk8
 services:
 - docker
+env:
+  global:
+  - secure: "P5TuHHw6JGkUXf9mbgxj724bXv9UCXxYXyFQygIg/5FSU/4wDXy7A4bOFIiJdnz6HURflCOLi0UIrvBJwM8zQKAkFd4mpJwNB1w18u1YyPiq0tA11MQzT+xnGo7A7fthDM8+nu5s2PRQBdNsABz5IUP529MMTDTlu9TQGYpQPJCoVdrCCT91OveVG2TUx63Hjm9WriC8UeF95dP25C1MSH52N09ZoWA1z0MjNaIsF2TDuGzaq5wgMmF4JRDu1JecsD/obItj5kkSaSybr0yEHV3Vu3swYOYY8/3h6tWSyvRVRN1ByE0GAoafb4Q4gpSCuAiUtJNuDS5MUB8hBaGo4RdD52L4OiiXBEdUBSnE2BoPiMu8gh9tXpuWEEhpJxC00q1cdtZ/Wyds90GXDUK2M4unPO/pHIqaqOF9pw8DQU+lOOBdTYLuRoJ3hnJ7gW8osqLpQZ5H0bHyv+TFXC4jlEUC0IYtEe3JbhihZ6S7ve6oByyXpOhShvWYYuUt6M5zKz12u8PjsogqGxJaxE0XAOR0681Vrx8VSNCz9m8mcG6tRRKsgY0ZDpGIZDt9UPjhAwwceU/vHKPJnGuFfA3u1sNL6oPovoKdrULUv8lguPZ4poIUYgXC0MZaxrFWTmjwkrR6OedYDhNaj9bIKeoPbLksNLemnIb6fFc7nz6Nfxg="
+  - secure: "e0zEfHGAnwr2RGfRkG+p8PLqbmn0msmtgRA+kySxc3dqKBIIUksZEsC2PlPEUgIEvWudmxa07sPnL975P2teBdFu9xJ4rMKCez4InBsM29hsURBwc1X+b3LE0LzfD6A/+GvJQnrDMq8niPJbEjoSCyZcketnOgB6cObe699T0vyXpUJJqHawsBd2XX9CeBl73R1fFREPxMz+clWx1GLbdPvudl3eKMPssnSECL4EZu79b1lvLbFNu9Dkm0iyvXGLoTUYQ1z7I4h6awHAS2nVt39eFUPrTO5Gi/6ZpN3GIAO1ZKjEfEyrgiz/0iYHm/xByJl+AmHJIWYKf70rWNUArNweb0rC4yFrM/eI4Ls/Dh3RuzQz4Sl8v1KrPpN0xuYwO8sL7E1eUq8B7zIrPxo4Wl58IsEuw+9UCi8LpaAEvA7b9UVUfXQ+fgS2DpseLnPpmLzBdb3Ra5g6cVQ46BEwW38lT17Hpm4Hnng6bgBsgdCKu6vb15B5zE6xSSwuBhWeMRQIoSfqmw4QHiksOXpE+l69AEgrqMp6qFRqs2B8ivO2cJatn4NmFQ+cq0q7r00VLMoAjsbSGQT7/8NmwaDtdLq+Vtww+HnF24YeguIzCb89hsNkBp9N77A9ev+C/kdwUStMuOvSwVQN9bBC1r1LdAig7jMKlhBzP3lJ6XXVPTE="
+  - COMMIT=${TRAVIS_COMMIT::7}
+after_success:
+- docker login -u $DOCKER_USER -p $DOCKER_PASS
+- export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH&amp;amp;amp;amp;amp;amp;amp;lt;span data-mce-type="bookmark" style="display: inline-block; width: 0px; overflow: hidden; line-height: 0;" class="mce_SELRES_start"&amp;amp;amp;amp;amp;amp;amp;gt;&amp;amp;amp;amp;amp;amp;amp;lt;/span&amp;amp;amp;amp;amp;amp;amp;gt;; fi`
+- export IMAGE_NAME=svcatanea/skube
+- docker build -t $IMAGE_NAME:$COMMIT .
+- docker tag $IMAGE_NAME:$COMMIT $IMAGE_NAME:$TAG
+- docker push $IMAGE_NAME
