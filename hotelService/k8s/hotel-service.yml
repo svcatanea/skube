@@ -1,13 +1,13 @@
 kind: Service
 apiVersion: v1
 metadata:
-  name: aishello-service
+  name: hotel-service
 spec:
   selector:
-    run: aishello-service
+    run: hotel-service
   ports:
     - name: port1
       protocol: TCP
-      port: 8080
-      targetPort: 8080
+      port: 6100
+      targetPort: 6100
   type: NodePort

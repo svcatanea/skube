@@ -1,0 +1,24 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: hotel-service
+  labels:
+    run: hotel-service
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        run: hotel-service
+    spec:
+      containers:
+      - name: hotel-service
+        image: svcatanea/skube-hotel
+        ports:
+        - containerPort: 6100
+          protocol: TCP
+        env:
+        - name: spring.data.mongodb.uri
+          value: 'mongodb://mongo:27017'
+        - name: spring.data.mongodb.database
+          value: 'test'

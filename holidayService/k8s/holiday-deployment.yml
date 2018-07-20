@@ -1,0 +1,26 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: holiday-service
+  labels:
+    run: holiday-service
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        run: holiday-service
+    spec:
+      containers:
+      - name: holiday-service
+        image: svcatanea/skube-holiday
+        ports:
+        - containerPort: 6200
+          protocol: TCP
+        env:
+        - name: spring.data.mongodb.uri
+          value: 'mongodb://mongo:27017'
+        - name: spring.data.mongodb.database
+          value: 'test'
+        - name: hotelService
+          value: 'http://hotel-service:6100/hotels/q'
