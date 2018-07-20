@@ -1,0 +1,12 @@
+server:
+  port: 6200
+
+hotelService: http://localhost:6100/hotels/q
+
+endpoints:
+  health:
+    sensitive: false
+  restart:
+    enabled: true
+  shutdown:
+    enabled: true

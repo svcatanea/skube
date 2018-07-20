@@ -1,5 +1,6 @@
 FROM openjdk:8-jdk-alpine
 VOLUME /tmp
-ADD target/ais-spring-boot-docker-0.1.0.jar app.jar
+ADD target/holidayService.jar app.jar
 RUN sh -c 'touch /app.jar'
+EXPOSE 6200
 ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]

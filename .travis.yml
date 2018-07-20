@@ -3,6 +3,7 @@ language: java
 jdk: oraclejdk8
 
 services:
+- mongodb
 - docker
 
 env:
@@ -13,8 +14,17 @@ env:
   
 after_success:
 - docker login -u $DOCKER_USER -p $DOCKER_PASS
-- export TAG=latest
-- export IMAGE_NAME=svcatanea/skube
-- docker build -t $IMAGE_NAME:$COMMIT .
-- docker tag $IMAGE_NAME:$COMMIT $IMAGE_NAME:$TAG
-- docker push $IMAGE_NAME
+#TAG
+- export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
+
+#Hotel service
+- export IMAGE_HOTEL=svcatanea/skube-hotel
+- docker build -t $IMAGE_HOTEL:$COMMIT ./hotelService
+- docker tag $IMAGE_HOTEL:$COMMIT $IMAGE_HOTEL:$TAG
+- docker push $IMAGE_HOTEL
+
+#Holiday service
+- export IMAGE_HOLIDAY=svcatanea/skube-holiday
+- docker build -t $IMAGE_HOLIDAY:$COMMIT ./holidayService
+- docker tag $IMAGE_HOLIDAY:$COMMIT $IMAGE_HOLIDAY:$TAG
+- docker push $IMAGE_HOLIDAY

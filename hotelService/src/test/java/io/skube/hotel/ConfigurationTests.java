@@ -13,9 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.ais;
+package io.skube.hotel;
 
 import static org.junit.Assert.*;
+
+import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,7 +34,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @DirtiesContext
-public class AisConfigurationTests {
+public class ConfigurationTests {
 
     @LocalServerPort
     private int port;
@@ -40,11 +42,13 @@ public class AisConfigurationTests {
     @Autowired
     private TestRestTemplate restTemplate;
 
-    @Test
-    public void testGreeting() throws Exception {
-        ResponseEntity<String> entity = restTemplate
-                .getForEntity("http://localhost:" + this.port + "/", String.class);
+    @SuppressWarnings("rawtypes")
+	@Test
+    public void testRest() throws Exception {
+        ResponseEntity<List> entity = restTemplate
+                .getForEntity("http://localhost:" + this.port + "/hotels", List.class);
         assertEquals(HttpStatus.OK, entity.getStatusCode());
+
     }
 
 }
